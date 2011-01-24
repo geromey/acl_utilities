@@ -55,21 +55,31 @@ And this is it; your links are now only displayed when they can be accessed!
 1. use of the option wrapper: 
 
 <ul>
-  <li><?php echo $this->Html->link(__('List Posts', true), array('action' => 'index')); ?><li>
+  <li>
+    <?php echo $this->Html->link(__('List Posts', true), array('action' => 'index')); ?>
+  <li>
 <ul>
 
 <ul>
-  <?php echo $this->Acl->link(__('List Posts', true), array('action' => 'index'),array('wrapper'=>'li'); ?>
+  <?php echo $this->Acl->link(__('List Posts', true)
+                              ,array('action' => 'index')
+                              ,array('wrapper'=>'li'); ?>
 <ul>
 
 2. another use of the wrapper
 
-<div class="myClass"><?php echo $this->Html->link(__('List Posts', true), array('action' => 'index')); ?></div>
+<div class="myClass">
+  <?php echo $this->Html->link(__('List Posts', true), array('action' => 'index')); ?>
+</div>
 
-<?php echo $this->Acl->link(__('List Posts', true), array('action' => 'index'),array('wrapper'=>'<div class="myClass">%s</div>'); ?>
+<?php echo $this->Acl->link(__('List Posts', true)
+                           ,array('action' => 'index')
+                           ,array('wrapper'=>'<div class="myClass">%s</div>'); ?>
 
 3. use of $this->Acl->check()
 
 <?php if ($this->Acl->check(array('action' => 'index'))): ?>
-  <div class="myClass"><?php echo $this->Html->link(__('List Posts', true), array('action' => 'index')); ?></div>
+  <div class="myClass">
+    <?php echo $this->Html->link(__('List Posts', true), array('action' => 'index')); ?>
+  </div>
 <?php endif; ?>
