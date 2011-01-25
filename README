@@ -1,8 +1,10 @@
-AclUtilities
+*** AclUtilities ***
 
 AclUtilities is a Cakephp plugin.
 
 It permits to only display the link for which the user has access.
+
+For now, AclUtilities contains just one Helper but it has been made into a plugin to make it's use simpler.
 
 Installation:
 
@@ -52,7 +54,7 @@ And this is it; your links are now only displayed when they can be accessed!
 ** More examples **
 
 
-1. use of the option wrapper: 
+1. use of the option 'wrapper': 
 
 <ul>
   <li>
