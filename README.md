@@ -79,3 +79,11 @@ And this is it; your links are now only displayed when they can be accessed!
 			<?php echo $this->Html->link(__('List Posts', true), array('action' => 'index')); ?>
 		</div>
 	<?php endif; ?>
+	
+* use of blocks (only display a block if a link is successful):
+
+	<?php $this->Acl->startBlock() ?>
+		<div class="myClass">
+			<?php echo $this->Acl->link(__('List Posts', true), array('action' => 'index')); ?>
+		</div>
+	<?php $this->Acl->endBlock() ?>
