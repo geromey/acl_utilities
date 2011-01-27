@@ -1,14 +1,10 @@
-## AclUtilities ##
+# AclUtilities Plugin for CakePHP #
 
-AclUtilities is a Cakephp plugin.
+AclUtilities permits to translarently display or hide links in view according to Acl rules.
 
-It permits to only display the link for which the user has access.
+## Installation ##
 
-For now, AclUtilities contains just one Helper but it has been made into a plugin to make it's use simpler.
-
-Installation:
-
-1. in the views, replace $this->Html->link() by $this->Acl->link()
+* in the views, replace $this->Html->link() by $this->Acl->link()
 
 example:
 
@@ -16,7 +12,7 @@ example:
 
 <?php echo $this->Html->link(__('Edit User', true), array('controller'=>'User','action' => 'edit')); ?>
 
-replaced by
+replaced by:
 
 <?php echo $this->Acl->link(__('List Posts', true), array('action' => 'index')); ?>
 
@@ -24,11 +20,11 @@ replaced by
 
 Be sure to use an array format for the URL.
 
-2. in the AppController, add the helper AclUtilities.Acl
+* in the AppController, add the helper AclUtilities.Acl
 
 var $helpers = array([...], 'AclUtilities.Acl');
 
-3. If you are using Auth->allowedActions or Auth->allow()
+* If you are using Auth->allowedActions or Auth->allow()
    Then you have to move them all into AppController::beforeFilter() like the following:
 
   function beforeFilter() {
@@ -49,12 +45,10 @@ var $helpers = array([...], 'AclUtilities.Acl');
   
 And this is it; your links are now only displayed when they can be accessed!
 
+## More Examples ##
 
 
-** More examples **
-
-
-1. use of the option 'wrapper': 
+* use of the option wrapper: 
 
 <ul>
   <li>
@@ -68,7 +62,7 @@ And this is it; your links are now only displayed when they can be accessed!
                               ,array('wrapper'=>'li'); ?>
 <ul>
 
-2. another use of the wrapper
+* another use of the wrapper
 
 <div class="myClass">
   <?php echo $this->Html->link(__('List Posts', true), array('action' => 'index')); ?>
@@ -78,7 +72,7 @@ And this is it; your links are now only displayed when they can be accessed!
                            ,array('action' => 'index')
                            ,array('wrapper'=>'<div class="myClass">%s</div>'); ?>
 
-3. use of $this->Acl->check()
+* use of $this->Acl->check()
 
 <?php if ($this->Acl->check(array('action' => 'index'))): ?>
   <div class="myClass">

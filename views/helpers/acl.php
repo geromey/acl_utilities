@@ -1,12 +1,19 @@
 <?php
+/**
+ * Acl Helper
+ *
+ * Acl view helper allowing to check the Acl from the views
+ *
+ * @package AclUtilities
+ * @subpackage AclUtilities.views.helpers
+ */
 class AclHelper extends AppHelper
 {
-  public $name = 'Acl';
   public $helpers = array('Session', 'Html');
 
   /**
    *
-   * foreign key of the aro
+   * foreign key of the aro Usually the User.id
    * @var integer
    */
   private $__foreignKey;
@@ -21,27 +28,45 @@ class AclHelper extends AppHelper
   /**
    *
    * Acl Component used for checking the access
-   * @var AclComponent²
+   * @var AclComponent
    */
   private $__acl;
 
+  /**
+   * List of current blocks
+   * @var array
+   */
+  private $__blocks;
+
+  /**
+   *
+   * Inits some variables
+   */
   public function beforeRender()
   {
     parent::beforeRender();
+
+    $this->__blocks = array();
 
     $this->__allowedActions = Configure::read('AclUtilities.allowedActions');
 
     $this->__foreignKey = $this->Session->read('Auth.User.id');
 
     // if not logged in, then no need for the Acl
-    if (is_null($this->__foreignKey))
+    if (!$this->isLoggedin())
       return;
 
     App::import('Component', 'Acl');
     $this->__acl = new AclComponent();
+
+
   }
 
-
+  /**
+   *
+   * Check if the url in param can be accessed by the current user
+   * @param array $url
+   */
   public function check($url)
   {
     $params = $this->params;
@@ -58,7 +83,7 @@ class AclHelper extends AppHelper
       return true;
 
     // if not logged in, then no need for the Acl
-    if (is_null($this->__foreignKey))
+    if (!$this->isLoggedin())
       return false;
 
     // find the aco node
@@ -78,10 +103,25 @@ class AclHelper extends AppHelper
     return $this->__acl->check($aro, $aco);
   }
 
+  /**
+   *
+   * call Html->link() with same params if the user has access to the link
+   * can contains 'wrapper in $option which will wrap the link if displayed
+   * @param string $title
+   * @param array $url
+   * @param array $options
+   * @param string $confirmMessage
+   */
   public function link($title, $url = null, $options = array(), $confirmMessage = false)
   {
     if (!$this->check($url))
       return '';
+
+    // set all the block to true so they will get displayed
+    foreach ($this->__blocks as $id =>$val)
+    {
+      $this->__blocks[$id] = true;
+    }
 
     if (isset($options['wrapper']))
     {
@@ -105,8 +145,42 @@ class AclHelper extends AppHelper
 	return sprintf($wrapper, '', $link);
   }
 
+  /**
+   *
+   * return true if the user if logged in or false otherwise
+   */
   public function isLoggedin()
   {
     return !is_null($this->__foreignKey);
+  }
+
+  /**
+   *
+   * You must use  Acl->endBlock() before the end of the view
+   * Begin a block which will be displayed only
+   * if there is an Acl->link() successful
+   * before the endBlock
+   */
+  public function startBlock()
+  {
+    $this->__blocks[] = false;
+    ob_start();
+  }
+
+  /**
+   *
+   * End the current block.
+   * This block is displayed if it contains
+   * at least one successfully displayed link
+   */
+  public function endBlock()
+  {
+    $lastid = count($this->__blocks) - 1;
+    if ($this->__blocks[$lastid])
+      ob_end_flush();
+    else
+      ob_end_clean();
+
+    unset($this->__blocks[$lastid]);
   }
 }
