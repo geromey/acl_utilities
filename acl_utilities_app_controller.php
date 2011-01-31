@@ -6,6 +6,5 @@
  */
 class AclUtilitiesAppController extends AppController
 {
-  public $plugin = 'AclUtilities';
-  public $helpers = array('Acl');
+	public $plugin = 'AclUtilities';
 }

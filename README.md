@@ -24,8 +24,8 @@ Be sure to use an array format for the URL.
 
 		var $helpers = array(/*...,*/ 'AclUtilities.Acl');
 
-* If you are using Auth->allowedActions or Auth->allow()
-   Then you have to move them all into AppController::beforeFilter() like the following:
+* If you are using Auth->allowedActions or Auth->allow()<br>
+  Then you have to move them all into AppController::beforeFilter() like the following:
 
 	function beforeFilter() {
 		//[...]
@@ -37,7 +37,7 @@ Be sure to use an array format for the URL.
 			'Posts' => array('index', 'view'),
 			'Users' => array('login','register'),
 		));
-	  
+
 		// now, we need to allow the action for the current module
 		if (isset($allowedActions[$this->name]))
 			$this->Auth->allow($allowedActions[$this->name]);
@@ -74,16 +74,20 @@ And this is it; your links are now only displayed when they can be accessed!
 
 * use of $this->Acl->check()
 
-	<?php if ($this->Acl->check(array('action' => 'index'))): ?>
-		<div class="myClass">
-			<?php echo $this->Html->link(__('List Posts', true), array('action' => 'index')); ?>
-		</div>
-	<?php endif; ?>
+  <div>
+		<?php if ($this->Acl->check(array('action' => 'index'))): ?>
+			<div class="myClass">
+				<?php echo $this->Html->link(__('List Posts', true), array('action' => 'index')); ?>
+			</div>
+		<?php endif; ?>
+	</div>
 	
 * use of blocks (only display a block if a link is successful):
 
-	<?php $this->Acl->startBlock() ?>
-		<div class="myClass">
-			<?php echo $this->Acl->link(__('List Posts', true), array('action' => 'index')); ?>
-		</div>
-	<?php $this->Acl->endBlock() ?>
+	<div>
+		<?php $this->Acl->startBlock() ?>
+			<div class="myClass">
+				<?php echo $this->Acl->link(__('List Posts', true), array('action' => 'index')); ?>
+			</div>
+		<?php $this->Acl->endBlock() ?>
+	</div>
