@@ -91,3 +91,10 @@ And this is it; your links are now only displayed when they can be accessed!
 			</div>
 		<?php $this->Acl->endBlock() ?>
 	</div>
+
+## Use a different Model ##
+
+In AppController::beforeFilter() add this:
+
+	Configure::write('AclUtilities.modelName','Group');
+	Configure::write('AclUtilities.modelKey','Auth.User.group_id');

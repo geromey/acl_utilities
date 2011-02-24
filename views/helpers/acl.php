@@ -40,6 +40,21 @@ class AclHelper extends AppHelper
 
 	/**
 	 *
+	 * Model used for the aro
+	 * @var string
+	 */
+	protected $_modelName = 'User';
+
+	/**
+	 *
+	 * Where the model id can be found in the session
+	 * @var string
+	 */
+	protected $_modelKey = 'Auth.User.id';
+
+
+	/**
+	 *
 	 * Inits some variables
 	 */
 	public function beforeRender()
@@ -49,8 +64,15 @@ class AclHelper extends AppHelper
 		$this->__blocks = array();
 
 		$this->__allowedActions = Configure::read('AclUtilities.allowedActions');
+		// read the modelName and modelKey from the config
+		$modelName = Configure::read('AclUtilities.modelName');
+		if (!is_null($modelName))
+		  $this->_modelName = $modelName;
+		$modelKey = Configure::read('AclUtilities.modelKey');
+		if (!is_null($modelKey))
+		  $this->_modelKey = $modelKey;
 
-		$this->__foreignKey = $this->Session->read('Auth.User.id');
+		$this->__foreignKey = $this->Session->read($this->_modelKey);
 
 		// if not logged in, then no need for the Acl
 		if (!$this->isLoggedin())
@@ -97,7 +119,7 @@ class AclHelper extends AppHelper
 				return false;
 			$aco = substr($aco , 0, $slashPos);
 		}
-		$aro = array('model' => 'User', 'foreign_key' => $this->__foreignKey);
+		$aro = array('model' => $this->_modelName, 'foreign_key' => $this->__foreignKey);
 		return $this->__acl->check($aro, $aco);
 	}
 
