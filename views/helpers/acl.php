@@ -93,7 +93,7 @@ class AclHelper extends AppHelper
 		unset($params['pass']);
 		$url = array_merge($this->params,$url);
 
-		$controller = ucfirst($url['controller']);
+		$controller = Inflector::camelize($url['controller']);
 		$action = strtolower($url['action']);
 
 		// check against the allowedActions
