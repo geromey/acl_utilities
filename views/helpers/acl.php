@@ -200,7 +200,5 @@ class AclHelper extends AppHelper
 			ob_end_flush();
 		else
 			ob_end_clean();
-
-		unset($this->__blocks[$lastid]);
 	}
 }
